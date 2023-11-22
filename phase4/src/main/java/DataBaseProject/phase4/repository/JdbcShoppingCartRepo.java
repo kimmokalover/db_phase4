@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import team8.phase3.domain.NormalUser;
-import team8.phase3.domain.ShoppingCart;
+import DataBaseProject.phase4.domain.NormalUser;
+import DataBaseProject.phase4.domain.ShoppingCart;
 
 public class JdbcShoppingCartRepo {
 

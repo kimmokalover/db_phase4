@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
-import team8.phase3.domain.Review;
-import team8.phase3.domain.ShoppingCart;
+import DataBaseProject.phase4.domain.Review;
+import DataBaseProject.phase4.domain.ShoppingCart;
 
 public class JdbcReviewRepo {
 

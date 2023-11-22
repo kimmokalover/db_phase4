@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import team8.phase3.domain.BrandUser;
-import team8.phase3.domain.NormalUser;
+import DataBaseProject.phase4.domain.BrandUser;
+import DataBaseProject.phase4.domain.NormalUser;
 
 public class JdbcJoinRepo {
     private final Connection conn;

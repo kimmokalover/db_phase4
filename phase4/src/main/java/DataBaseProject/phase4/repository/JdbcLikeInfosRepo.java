@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import team8.phase3.domain.LikeInfo;
-import team8.phase3.domain.Product;
-import team8.phase3.domain.ShoppingCart;
+import DataBaseProject.phase4.domain.LikeInfo;
+import DataBaseProject.phase4.domain.Product;
+import DataBaseProject.phase4.domain.ShoppingCart;
 
 public class JdbcLikeInfosRepo {
 

@@ -5,8 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import team8.phase3.domain.NormalUser;
-import team8.phase3.domain.Rank;
+import DataBaseProject.phase4.domain.NormalUser;
+import DataBaseProject.phase4.domain.Rank;
 
 public class JdbcUpdateUserInfoRepo {
 

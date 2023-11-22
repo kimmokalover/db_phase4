@@ -4,9 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.xml.transform.Result;
-import oracle.ucp.proxy.annotation.Pre;
-import team8.phase3.domain.Product;
+import DataBaseProject.phase4.domain.Product;
 
 public class JdbcProductRepo {
 

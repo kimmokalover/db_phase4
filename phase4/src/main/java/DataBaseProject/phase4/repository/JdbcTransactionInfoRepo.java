@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import team8.phase3.domain.PaymentType;
-import team8.phase3.domain.PurchaseTransaction;
+import DataBaseProject.phase4.domain.PaymentType;
+import DataBaseProject.phase4.domain.PurchaseTransaction;
 
 public class JdbcTransactionInfoRepo {
 
