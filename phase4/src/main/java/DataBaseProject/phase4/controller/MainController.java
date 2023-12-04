@@ -17,12 +17,15 @@ import DataBaseProject.phase4.service.TransactionService;
 import DataBaseProject.phase4.service.UpdateInfoService;
 import DataBaseProject.phase4.service.UserService;
 import groovy.util.logging.Slf4j;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,8 +48,6 @@ public class MainController {
     private final ReviewService reviewService;
 
 
-    private String userId;
-
     @Autowired
     public MainController(JoinService joinService, LoginService loginService,
             ProductAndLikeInfoService likeInfoService, UserService userService,
@@ -63,11 +64,15 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String loginMainPage(){
+    public String loginMainPage(Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         return "loginPage";
     }
     @GetMapping("/signup")
-    public String signupPage(){
+    public String signupPage(Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         return "signup";
     }
     @PostMapping("/join")
@@ -108,7 +113,9 @@ public class MainController {
     }
 
     @GetMapping("/userInfo")
-    public String userInfo(Model model){
+    public String userInfo(@CookieValue(name = "userId", required = false) String userId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         NormalUser normalUser = userService.getUserInfo(userId);
         model.addAttribute("normalUser", normalUser);
 
@@ -116,7 +123,9 @@ public class MainController {
     }
 
     @GetMapping("/purchase")
-    public String purchaseProduct(Model model){
+    public String purchaseProduct(@CookieValue(name = "userId", required = false) String userId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         ArrayList<PurchaseTransaction> arr = transactionService.getTransactionInfos(userId);
         ArrayList<Product> items = new ArrayList<>();
         for (PurchaseTransaction purchaseTransaction : arr){
@@ -130,7 +139,9 @@ public class MainController {
     }
 
     @GetMapping("/review")
-    public String reviewProduct(Model model){
+    public String reviewProduct(@CookieValue(name = "userId", required = false) String userId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         ArrayList<Review> reviews = reviewService.getReviewInfos(userId);
         ArrayList<Product> products = new ArrayList<>();
 
@@ -147,7 +158,9 @@ public class MainController {
     }
 
     @GetMapping("/favorite")
-    public String favoriteProduct(Model model){
+    public String favoriteProduct(@CookieValue(name = "userId", required = false) String userId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         ArrayList<LikeInfo> likeInfos = likeInfoService.getLikeInfos(userId);
         ArrayList<Product> items = new ArrayList<>();
 
@@ -163,7 +176,9 @@ public class MainController {
     }
 
     @GetMapping("/shoppingCart")
-    public String myShoppingCart(Model model){
+    public String myShoppingCart(@CookieValue(name = "userId", required = false) String userId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         ArrayList<ShoppingCart> arr = shoppingCartService.checkProductsInShoppingCart(userId);
         ArrayList<Product> items = new ArrayList<>();
         for(ShoppingCart shoppingCart : arr){
@@ -187,15 +202,19 @@ public class MainController {
     }
 
     @PostMapping("/login")
-    public String login(String id, String pw, Model model, RedirectAttributes redirectAttributes){
+    public String login(String userId, String pw, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response){
         model.addAttribute("error", ""); // 에러 속성 초기화
-        Status status = loginService.normalLogin(id, pw);
+        Status status = loginService.normalLogin(userId, pw);
+        System.out.println(userId);
+        System.out.println(pw);
         if (status == Status.FAIL){
             model.addAttribute("error", "아이디 혹은 비밀번호가 맞지 않습니다. 다시 확인해주세요.");
             return "loginPage";
         }
         else{
-            userId = id;
+            Cookie cookie = new Cookie("userId", userId);
+            cookie.setMaxAge(60 * 60);  // 쿠키 유효 시간 : 1시간
+            response.addCookie(cookie);
             System.out.println("Success");
             ArrayList<Product> temp = likeInfoService.getTop10Product();
 
@@ -211,7 +230,9 @@ public class MainController {
         }
     }
     @GetMapping("/likeProduct/{productId}")
-    public String likeProduct(@PathVariable Long productId, Model model){
+    public String likeProduct(@CookieValue(name = "userId", required = false) String userId, @PathVariable Long productId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         Status status = likeInfoService.doLike(userId, productId);
         if (status == Status.SUCCESS) {
             System.out.println("좋아요 완료");
@@ -247,7 +268,9 @@ public class MainController {
         return "customerReview";
     }
     @GetMapping("/buyProduct/{productId}")
-    public String buyProduct(@PathVariable Long productId, Model model){
+    public String buyProduct(@CookieValue(name = "userId", required = false) String userId, @PathVariable Long productId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         Product product = likeInfoService.getProductInfo(productId);
         LocalDateTime t = LocalDateTime.now();
         PurchaseTransaction purchaseTransaction = new PurchaseTransaction((long) (t.toString() + userId).hashCode(),
@@ -274,7 +297,9 @@ public class MainController {
     }
 
     @GetMapping("addShoppingCart/{productId}")
-    public String addShoppingCart(@PathVariable Long productId, Model model){
+    public String addShoppingCart(@CookieValue(name = "userId", required = false) String userId, @PathVariable Long productId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         Status status = shoppingCartService.addProduct(userId, productId, 1L);
         if (status == Status.SUCCESS) {
             System.out.println("장바구니 추가 완료");
@@ -295,7 +320,9 @@ public class MainController {
         }
     }
     @GetMapping("/buyAllProduct")
-    public String buyAllProduct(Model model){
+    public String buyAllProduct(@CookieValue(name = "userId", required = false) String userId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         try {
             ArrayList<ShoppingCart> temp = shoppingCartService.buyProductsInShoppingCart(userId);
             for (ShoppingCart shoppingCart : temp){
@@ -324,7 +351,9 @@ public class MainController {
         return "shoppingCart";
     }
     @GetMapping("/deleteAllProduct")
-    public String deleteAllProduct(Model model){
+    public String deleteAllProduct(@CookieValue(name = "userId", required = false) String userId, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         shoppingCartService.deleteProduct(userId);
         ArrayList<ShoppingCart> arr = shoppingCartService.checkProductsInShoppingCart(userId);
         ArrayList<Product> items = new ArrayList<>();
@@ -340,7 +369,9 @@ public class MainController {
         return "shoppingCart";
     }
     @PostMapping("/editUserInfo")
-    public String login(String pw, String name, String phoneNumber, String emailAddress, Long age){
+    public String login(@CookieValue(name = "userId", required = false) String userId, String pw, String name, String phoneNumber, String emailAddress, Long age, Model model){
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
         System.out.println(pw);
         System.out.println(name);
         System.out.println(phoneNumber);
@@ -353,7 +384,7 @@ public class MainController {
         return "mainPage";
     }
     @PostMapping("/writeReview/{productId}")
-    public String writeReview(@PathVariable Long productId, String title, String body, RedirectAttributes redirectAttributes) {
+    public String writeReview(@CookieValue(name = "userId", required = false) String userId, @PathVariable Long productId, String title, String body, RedirectAttributes redirectAttributes) {
         LocalDateTime t = LocalDateTime.now();
         reviewService.addReview(new Review((long)(userId + productId.toString() + t.toString()).hashCode(), userId, productId, body, Time.valueOf(t.toLocalTime())));
 
