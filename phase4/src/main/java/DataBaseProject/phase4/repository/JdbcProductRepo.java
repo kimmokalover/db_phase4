@@ -29,7 +29,7 @@ public class JdbcProductRepo {
             preparedStatement.setString(4, product.getProductName());
             preparedStatement.setLong(5, product.getProductPrice());
             preparedStatement.setString(6, product.getProductDesc());
-            preparedStatement.setString(7, "/Users/gimseungjun/Desktop/phase3");
+            preparedStatement.setString(7, product.getProductPhotoImage());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? Status.SUCCESS : Status.FAIL;
             }
@@ -141,7 +141,8 @@ public class JdbcProductRepo {
             String productName = resultSet.getString(4);
             Long productPrice = resultSet.getLong(5);
             String productDesc = resultSet.getString(6);
-            return new Product(productId, productCategoryId, brandUserId, productName,productPrice, productDesc);
+            String productPhotoImage = resultSet.getString(7);
+            return new Product(productId, productCategoryId, brandUserId, productName,productPrice, productDesc, productPhotoImage);
 
         }catch (SQLException e) {
             e.printStackTrace();

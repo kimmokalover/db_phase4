@@ -80,7 +80,7 @@ public class JdbcShoppingCartRepo {
             return null;
         }
 
-        while(deleteShoppingCart(normalUserId) == Status.FAIL);
+        deleteShoppingCart(normalUserId);
 
         return shoppingCart;
     }
@@ -92,9 +92,7 @@ public class JdbcShoppingCartRepo {
                 return resultSet.next() ? Status.SUCCESS : Status.FAIL;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return Status.FAIL;
         }
     }
-
 }

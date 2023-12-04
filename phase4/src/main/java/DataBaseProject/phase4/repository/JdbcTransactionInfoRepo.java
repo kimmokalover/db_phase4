@@ -12,7 +12,7 @@ import DataBaseProject.phase4.domain.PurchaseTransaction;
 
 public class JdbcTransactionInfoRepo {
 
-    private static final String SQL = "select * from normaluser n, purchasetransaction pt, product p where n.id = pt.userid and pt.productid = p.productid";
+    private static final String SQL = "select * from purchasetransaction";
     private static final String SQL2 = "insert into purchasetransaction values(?, ?, ?, ?, ?, ?)";
     private final Connection conn;
 

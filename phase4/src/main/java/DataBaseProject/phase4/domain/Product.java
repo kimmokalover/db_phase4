@@ -8,6 +8,8 @@ public class Product {
     Long productPrice;
     String productDesc;
 
+    String productPhotoImage;
+
     public Product(Long productId, Long productCategoryId, String brandUserId, String productName, Long productPrice,
             String productDesc) {
         this.productId = productId;
@@ -16,6 +18,17 @@ public class Product {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productDesc = productDesc;
+    }
+
+    public Product(Long productId, Long productCategoryId, String brandUserId, String productName, Long productPrice,
+            String productDesc, String productPhotoImage) {
+        this.productId = productId;
+        this.productCategoryId = productCategoryId;
+        this.brandUserId = brandUserId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productDesc = productDesc;
+        this.productPhotoImage = productPhotoImage;
     }
 
     public Long getProductId() {
@@ -64,6 +77,13 @@ public class Product {
 
     public void setProductDesc(String productDesc) {
         this.productDesc = productDesc;
+    }
+
+    public String getProductPhotoImage() {
+        return productPhotoImage;
+    }
+    public void setProductPhotoImage(String productPhotoImage) {
+        this.productPhotoImage = productPhotoImage;
     }
 
 }
